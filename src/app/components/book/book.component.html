@@ -1,0 +1,74 @@
+<div class="row g-3 my-3">
+  <div class="col-md-6 d-flex justify-content-center">
+    <img
+      class="book-placeholder align-self-center"
+      [src]="
+        (image.valid && image.value) ||
+        'https://galapagos-pro.com/wp-content/uploads/2021/03/book-placeholder.jpg'
+      "
+      [alt]="title.value+' cover image'"
+    />
+  </div>
+  <form [formGroup]="bookForm" class="col-md-6">
+    <div class="form-floating mb-4">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="title"
+        id="floatingTitle"
+        [class.is-invalid]="title.dirty && title.invalid"
+      />
+      <label for="floatingTitle">Title</label>
+      <div class="invalid-feedback">Please provide a book title.</div>
+    </div>
+    <div class="form-floating mb-4">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="author"
+        id="floatingAuthor"
+        [class.is-invalid]="author.dirty && author.invalid"
+      />
+      <label for="floatingAuthor">Author</label>
+      <div class="invalid-feedback">Please provide a book author.</div>
+    </div>
+    <div class="form-floating mb-4">
+      <select
+        class="form-select"
+        formControlName="category"
+        id="floatingCategory"
+        [class.is-invalid]="category.dirty && category.invalid"
+      >
+        <option value="" selected disabled></option>
+        <option [value]="cat" *ngFor="let cat of categories">{{ cat }}</option>
+      </select>
+      <label for="floatingCategory">Category</label>
+      <div class="invalid-feedback">Please select a book category.</div>
+    </div>
+    <div class="form-floating mb-4">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="image"
+        id="floatingImage"
+        [class.is-invalid]="image.dirty && image.invalid"
+      />
+      <label for="floatingImage">Cover image link</label>
+      <div
+        [hidden]="image.dirty && image.errors && !image.errors['required']"
+        class="invalid-feedback"
+      >
+        Please provide a book cover image link.
+      </div>
+      <div
+        [hidden]="image.dirty && image.errors && !image.errors['pattern']"
+        class="invalid-feedback"
+      >
+        Please provide correct image link.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success" (click)="add()">
+      Add book
+    </button>
+  </form>
+</div>
