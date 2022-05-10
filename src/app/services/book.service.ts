@@ -9,13 +9,13 @@ export class BookService {
   constructor() {}
   bookdao = new Dao();
 
-  readAll() {
+  readAll(): Promise<IBook[]> {
     return this.bookdao.getAll();
   }
-  read(id: number) {
+  read(id: number): Promise<IBook> {
     return this.bookdao.getById(id);
   }
-  create(book: IBook) {
+  create(book: IBook): Promise<IBook> {
     return this.bookdao.save(book);
   }
 }
