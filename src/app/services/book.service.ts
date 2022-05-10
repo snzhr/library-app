@@ -18,4 +18,10 @@ export class BookService {
   create(book: IBook): Promise<IBook> {
     return this.bookdao.save(book);
   }
+  update(book: IBook) {
+    return this.bookdao.updateBook(book);
+  }
+  remove(id: number) {
+    return this.bookdao.deleteBook(id);
+  }
 }

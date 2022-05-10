@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { categories } from 'src/app/model/book';
+import { ActivatedRoute, Router } from '@angular/router';
+import { categories, IBook } from 'src/app/model/book';
 import { BookService } from 'src/app/services/book.service';
 
 const regex = "(http)?s?:?(//[^'']*.(?:png|jpg|jpeg|gif|png|svg))";
@@ -11,6 +12,7 @@ const regex = "(http)?s?:?(//[^'']*.(?:png|jpg|jpeg|gif|png|svg))";
   styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit {
+  currentBookId!: number;
   bookForm!: FormGroup;
   categories: string[] = categories;
   title: FormControl = new FormControl('', Validators.required);
@@ -21,7 +23,11 @@ export class BookComponent implements OnInit {
     Validators.required,
     Validators.pattern(regex),
   ]);
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.bookForm = new FormGroup({
@@ -31,11 +37,25 @@ export class BookComponent implements OnInit {
       cover_image: this.cover_image,
       published_year: this.published_year,
     });
+
+    const bookId = this.route.snapshot.params['id'];
+    this.currentBookId = bookId;
+    if (bookId) {
+      this.bookService.read(bookId).then((res) => {
+        this.bookForm.setValue({
+          title: res.title,
+          author: res.author,
+          category: res.category,
+          cover_image: res.cover_image,
+          published_year: res.published_year,
+        });
+      });
+    }
   }
 
   async add() {
     if (this.bookForm.valid) {
-      const res = this.bookService.create({
+      const res = await this.bookService.create({
         ...this.bookForm.value,
         id: Date.now(),
       });
@@ -44,5 +64,24 @@ export class BookComponent implements OnInit {
     } else {
       console.log('Please fill the form');
     }
+  }
+
+  async update() {
+    if (this.bookForm.valid) {
+      const res = await this.bookService.update({
+        ...this.bookForm.value,
+        id: Date.now(),
+      });
+      console.log('Updated ', res);
+      this.router.navigate(['']);
+    } else {
+      console.log('Please fill the form');
+    }
+  }
+
+  async delete() {
+    const res = await this.bookService.remove(this.currentBookId);
+    console.log(res, ' successfully deleted');
+    this.router.navigate(['']);
   }
 }

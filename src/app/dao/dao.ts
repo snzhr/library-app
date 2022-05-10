@@ -20,13 +20,32 @@ export class Dao {
     });
   }
 
-  getById(id: number): Promise<IBook> {
+  getById(id: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      let books = localStorage.getItem('books');
-      const book = JSON.parse(books as string).find(
-        (item: IBook) => item.id === id
-      );
+      let books = JSON.parse(localStorage.getItem('books') as string);
+      const book = books.find((item: IBook) => item.id == id);
+
       resolve(book);
+    });
+  }
+
+  updateBook(book: IBook): Promise<IBook> {
+    return new Promise((resolve, reject) => {
+      let books = JSON.parse(localStorage.getItem('books') as string);
+      const idx = books.findIndex((i: any) => i.id == book.id);
+      books.splice(idx, 1, book);
+      localStorage.setItem('books', JSON.stringify(books));
+      resolve(book);
+    });
+  }
+
+  deleteBook(id: number) {
+    return new Promise((resolve, reject) => {
+      let books = JSON.parse(localStorage.getItem('books') as string);
+      const idx = books.findIndex((i: any) => i.id == id);
+      const removed = books.splice(idx, 1);
+      localStorage.setItem('books', JSON.stringify(books));
+      resolve(removed[0]);
     });
   }
 }
