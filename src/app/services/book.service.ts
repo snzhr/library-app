@@ -6,6 +6,7 @@ import { IBook } from '../model/book';
   providedIn: 'root',
 })
 export class BookService {
+  wishlist: IBook[] = [];
   constructor() {}
   bookdao = new Dao();
 
