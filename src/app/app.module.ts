@@ -9,6 +9,7 @@ import { MainComponent } from './components/main/main.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { HeaderComponent } from './components/ui/header/header.component';
 import { BookComponent } from './components/book/book.component';
+import { SinglebookComponent } from './components/singlebook/singlebook.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BookComponent } from './components/book/book.component';
     WishlistComponent,
     HeaderComponent,
     BookComponent,
+    SinglebookComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, RouterModule],
   providers: [],

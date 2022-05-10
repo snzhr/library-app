@@ -1,1 +1,11 @@
-<p>wishlist works!</p>
+<div class="row">
+<div class="col">
+  <h3>Bookmarked books: {{bookList.length}}</h3>
+</div>
+
+</div>
+<div class="row py-3 gx-2 gy-3">
+  <div class="col-3" *ngFor="let book of bookList">
+    <app-singlebook [book]="book"></app-singlebook>
+  </div>
+</div>
