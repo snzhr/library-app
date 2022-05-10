@@ -3,12 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { categories } from 'src/app/model/book';
 import { BookService } from 'src/app/services/book.service';
 
-const regex =
-  '((http|https)://)(www.)?' +
-  '[a-zA-Z0-9@:%._\\+~#?&//=]' +
-  '{2,256}\\.[a-z]' +
-  '{2,6}\\b([-a-zA-Z0-9@:%' +
-  '._\\+~#?&//=]*)';
+const regex = "(http)?s?:?(//[^'']*.(?:png|jpg|jpeg|gif|png|svg))";
 
 @Component({
   selector: 'app-book',
@@ -21,7 +16,8 @@ export class BookComponent implements OnInit {
   title: FormControl = new FormControl('', Validators.required);
   author: FormControl = new FormControl('', Validators.required);
   category: FormControl = new FormControl('', Validators.required);
-  image: FormControl = new FormControl('', [
+  published_year: FormControl = new FormControl(null, Validators.required);
+  cover_image: FormControl = new FormControl('', [
     Validators.required,
     Validators.pattern(regex),
   ]);
@@ -32,16 +28,19 @@ export class BookComponent implements OnInit {
       title: this.title,
       author: this.author,
       category: this.category,
-      image: this.image,
+      cover_image: this.cover_image,
+      published_year: this.published_year,
     });
   }
 
-  add() {
+  async add() {
     if (this.bookForm.valid) {
-      this.bookService.create({
+      const res = this.bookService.create({
         ...this.bookForm.value,
         id: Date.now(),
       });
+      console.log('Created ', res);
+      this.bookForm.reset();
     } else {
       console.log('Please fill the form');
     }
