@@ -78,8 +78,16 @@
         Please provide correct image link.
       </div>
     </div>
-    <button type="submit" class="btn btn-success" (click)="add()">
+    <button *ngIf="!currentBookId; else updateBtn" type="submit" class="btn btn-success" (click)="add()">
       Add book
     </button>
-  </form>
+    <ng-template #updateBtn>
+      <button type="submit" class="btn btn-success" (click)="update()">
+        Update book
+      </button>
+      <button type="button" class="btn btn-danger mx-3" (click)="delete()">
+        Delete book
+      </button>
+    </ng-template>
+      </form>
 </div>
