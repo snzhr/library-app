@@ -20,11 +20,10 @@ export class Dao {
     });
   }
 
-  getById(id: number): Promise<any> {
+  getById(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let books = JSON.parse(localStorage.getItem('books') as string);
       const book = books.find((item: IBook) => item.id == id);
-
       resolve(book);
     });
   }
@@ -32,14 +31,14 @@ export class Dao {
   updateBook(book: IBook): Promise<IBook> {
     return new Promise((resolve, reject) => {
       let books = JSON.parse(localStorage.getItem('books') as string);
-      const idx = books.findIndex((i: any) => i.id == book.id);
+      const idx = books.findIndex((item: IBook) => item.id == book.id);
       books.splice(idx, 1, book);
       localStorage.setItem('books', JSON.stringify(books));
       resolve(book);
     });
   }
 
-  deleteBook(id: number) {
+  deleteBook(id: string) {
     return new Promise((resolve, reject) => {
       let books = JSON.parse(localStorage.getItem('books') as string);
       const idx = books.findIndex((i: any) => i.id == id);

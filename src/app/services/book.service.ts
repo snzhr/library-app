@@ -6,6 +6,7 @@ import { IBook } from '../model/book';
   providedIn: 'root',
 })
 export class BookService {
+  allBooks: IBook[] = [];
   wishlist: IBook[] = [];
   constructor() {}
   bookdao = new Dao();
@@ -13,7 +14,7 @@ export class BookService {
   readAll(): Promise<IBook[]> {
     return this.bookdao.getAll();
   }
-  read(id: number): Promise<IBook> {
+  read(id: string): Promise<IBook> {
     return this.bookdao.getById(id);
   }
   create(book: IBook): Promise<IBook> {
@@ -22,7 +23,9 @@ export class BookService {
   update(book: IBook) {
     return this.bookdao.updateBook(book);
   }
-  remove(id: number) {
+  remove(id: string) {
     return this.bookdao.deleteBook(id);
   }
+
+  uniqueId = () => Math.random().toString(36).substr(2, 9);
 }

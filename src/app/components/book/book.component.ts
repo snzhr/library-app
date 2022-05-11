@@ -12,7 +12,7 @@ const regex = "(http)?s?:?(//[^'']*.(?:png|jpg|jpeg|gif|png|svg))";
   styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit {
-  currentBookId!: number;
+  currentBookId!: string;
   bookForm!: FormGroup;
   categories: string[] = categories;
   title: FormControl = new FormControl('', Validators.required);
@@ -57,7 +57,7 @@ export class BookComponent implements OnInit {
     if (this.bookForm.valid) {
       const res = await this.bookService.create({
         ...this.bookForm.value,
-        id: Date.now(),
+        id: this.bookService.uniqueId(),
       });
       console.log('Created ', res);
       this.bookForm.reset();
@@ -70,7 +70,7 @@ export class BookComponent implements OnInit {
     if (this.bookForm.valid) {
       const res = await this.bookService.update({
         ...this.bookForm.value,
-        id: Date.now(),
+        id: this.currentBookId,
       });
       console.log('Updated ', res);
       this.router.navigate(['']);
