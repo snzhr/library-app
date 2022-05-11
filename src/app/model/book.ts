@@ -15,9 +15,10 @@ export const categories = [
   'Cookbooks',
   'History',
   'Poetry',
+  'Programming',
 ];
 export interface IBook {
-  id: number;
+  id: string;
   title: string;
   author: string;
   published_year: number;
